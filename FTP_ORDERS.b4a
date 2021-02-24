@@ -36,6 +36,7 @@ Sub Process_Globals
 	Type ftpData(username As String, url As String, port As Int)
 	
 	Private xui As XUI
+	Private ftp As ClassFtp
 End Sub
 
 Sub Globals
@@ -47,13 +48,16 @@ Sub Globals
 	Private edtInitialFolder As B4XFloatTextField
 	Private swStoreFtpInfo As B4XSwitch
 	Private lblStoreFtpInfo As Label
+	Private btnTest As Button
 End Sub
 
 Sub Activity_Create(FirstTime As Boolean)
+	ftp.Initialize
 	Activity.LoadLayout("main")
 	Activity.Title = Application.LabelName
-	GetFtpData
-	SetStoredInfo
+'	GetFtpData
+'	SetStoredInfo
+	TestFtp
 End Sub
 
 Sub Activity_Resume
@@ -100,4 +104,13 @@ Private Sub lblStoreFtpInfo_Click
 	Else
 		swStoreFtpInfo.Value = True	
 	End If
+End Sub
+
+Private Sub TestFtp
+	ftp.GetFolders
+	
+End Sub
+
+Private Sub btnTest_Click
+	ftp.GetFolders
 End Sub

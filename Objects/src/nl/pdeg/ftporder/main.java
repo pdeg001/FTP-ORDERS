@@ -34,7 +34,7 @@ public class main extends Activity implements B4AActivity{
 		super.onCreate(savedInstanceState);
         mostCurrent = this;
 		if (processBA == null) {
-			processBA = new BA(this.getApplicationContext(), null, null, "nl.pdeg.ftporder", "nl.pdeg.ftporder.main");
+			processBA = new anywheresoftware.b4a.ShellBA(this.getApplicationContext(), null, null, "nl.pdeg.ftporder", "nl.pdeg.ftporder.main");
 			processBA.loadHtSubs(this.getClass());
 	        float deviceScale = getApplicationContext().getResources().getDisplayMetrics().density;
 	        BALayout.setDeviceScale(deviceScale);
@@ -335,23 +335,48 @@ public class main extends Activity implements B4AActivity{
             
     }
 
-public anywheresoftware.b4a.keywords.Common __c = null;
-public static anywheresoftware.b4a.objects.B4XViewWrapper.XUI _xui = null;
-public nl.pdeg.ftporder.b4xfloattextfield _edtpass = null;
-public nl.pdeg.ftporder.b4xfloattextfield _edtserver = null;
-public nl.pdeg.ftporder.b4xfloattextfield _edtuser = null;
-public nl.pdeg.ftporder.b4xfloattextfield _edtport = null;
-public nl.pdeg.ftporder.b4xfloattextfield _edtinitialfolder = null;
-public nl.pdeg.ftporder.b4xswitch _swstoreftpinfo = null;
-public anywheresoftware.b4a.objects.LabelWrapper _lblstoreftpinfo = null;
-public b4a.example.dateutils _dateutils = null;
-public nl.pdeg.ftporder.starter _starter = null;
-public nl.pdeg.ftporder.xuiviewsutils _xuiviewsutils = null;
 
+
+public static void initializeProcessGlobals() {
+    
+    if (main.processGlobalsRun == false) {
+	    main.processGlobalsRun = true;
+		try {
+		        b4a.example.dateutils._process_globals();
+		
+        } catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+    }
+}
 public static boolean isAnyActivityVisible() {
     boolean vis = false;
 vis = vis | (main.mostCurrent != null);
 return vis;}
+
+private static BA killProgramHelper(BA ba) {
+    if (ba == null)
+        return null;
+    anywheresoftware.b4a.BA.SharedProcessBA sharedProcessBA = ba.sharedProcessBA;
+    if (sharedProcessBA == null || sharedProcessBA.activityBA == null)
+        return null;
+    return sharedProcessBA.activityBA.get();
+}
+public static void killProgram() {
+     {
+            Activity __a = null;
+            if (main.previousOne != null) {
+				__a = main.previousOne.get();
+			}
+            else {
+                BA ba = killProgramHelper(main.mostCurrent == null ? null : main.mostCurrent.processBA);
+                if (ba != null) __a = ba.activity;
+            }
+            if (__a != null)
+				__a.finish();}
+
+BA.applicationContext.stopService(new android.content.Intent(BA.applicationContext, starter.class));
+}
 public static class _ftpdata{
 public boolean IsInitialized;
 public String username;
@@ -367,122 +392,171 @@ port = 0;
 		public String toString() {
 			return BA.TypeToString(this, false);
 		}}
+public anywheresoftware.b4a.keywords.Common __c = null;
+public static anywheresoftware.b4a.objects.B4XViewWrapper.XUI _xui = null;
+public static nl.pdeg.ftporder.classftp _ftp = null;
+public nl.pdeg.ftporder.b4xfloattextfield _edtpass = null;
+public nl.pdeg.ftporder.b4xfloattextfield _edtserver = null;
+public nl.pdeg.ftporder.b4xfloattextfield _edtuser = null;
+public nl.pdeg.ftporder.b4xfloattextfield _edtport = null;
+public nl.pdeg.ftporder.b4xfloattextfield _edtinitialfolder = null;
+public nl.pdeg.ftporder.b4xswitch _swstoreftpinfo = null;
+public anywheresoftware.b4a.objects.LabelWrapper _lblstoreftpinfo = null;
+public anywheresoftware.b4a.objects.ButtonWrapper _btntest = null;
+public b4a.example.dateutils _dateutils = null;
+public nl.pdeg.ftporder.starter _starter = null;
+public nl.pdeg.ftporder.xuiviewsutils _xuiviewsutils = null;
 public static String  _activity_create(boolean _firsttime) throws Exception{
- //BA.debugLineNum = 33;BA.debugLine="Sub Activity_Create(FirstTime As Boolean)";
- //BA.debugLineNum = 34;BA.debugLine="Activity.LoadLayout(\"main\")";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "activity_create", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "activity_create", new Object[] {_firsttime}));}
+RDebugUtils.currentLine=131072;
+ //BA.debugLineNum = 131072;BA.debugLine="Sub Activity_Create(FirstTime As Boolean)";
+RDebugUtils.currentLine=131073;
+ //BA.debugLineNum = 131073;BA.debugLine="ftp.Initialize";
+_ftp._initialize /*String*/ (null,processBA);
+RDebugUtils.currentLine=131074;
+ //BA.debugLineNum = 131074;BA.debugLine="Activity.LoadLayout(\"main\")";
 mostCurrent._activity.LoadLayout("main",mostCurrent.activityBA);
- //BA.debugLineNum = 35;BA.debugLine="Activity.Title = Application.LabelName";
+RDebugUtils.currentLine=131075;
+ //BA.debugLineNum = 131075;BA.debugLine="Activity.Title = Application.LabelName";
 mostCurrent._activity.setTitle(BA.ObjectToCharSequence(anywheresoftware.b4a.keywords.Common.Application.getLabelName()));
- //BA.debugLineNum = 36;BA.debugLine="GetFtpData";
-_getftpdata();
- //BA.debugLineNum = 37;BA.debugLine="SetStoredInfo";
-_setstoredinfo();
- //BA.debugLineNum = 38;BA.debugLine="End Sub";
+RDebugUtils.currentLine=131078;
+ //BA.debugLineNum = 131078;BA.debugLine="TestFtp";
+_testftp();
+RDebugUtils.currentLine=131079;
+ //BA.debugLineNum = 131079;BA.debugLine="End Sub";
+return "";
+}
+public static String  _testftp() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "testftp", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "testftp", null));}
+RDebugUtils.currentLine=655360;
+ //BA.debugLineNum = 655360;BA.debugLine="Private Sub TestFtp";
+RDebugUtils.currentLine=655361;
+ //BA.debugLineNum = 655361;BA.debugLine="ftp.GetFolders";
+_ftp._getfolders /*String*/ (null);
+RDebugUtils.currentLine=655363;
+ //BA.debugLineNum = 655363;BA.debugLine="End Sub";
 return "";
 }
 public static String  _activity_pause(boolean _userclosed) throws Exception{
- //BA.debugLineNum = 44;BA.debugLine="Sub Activity_Pause (UserClosed As Boolean)";
- //BA.debugLineNum = 46;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+RDebugUtils.currentLine=262144;
+ //BA.debugLineNum = 262144;BA.debugLine="Sub Activity_Pause (UserClosed As Boolean)";
+RDebugUtils.currentLine=262146;
+ //BA.debugLineNum = 262146;BA.debugLine="End Sub";
 return "";
 }
 public static String  _activity_resume() throws Exception{
- //BA.debugLineNum = 40;BA.debugLine="Sub Activity_Resume";
- //BA.debugLineNum = 42;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "activity_resume", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "activity_resume", null));}
+RDebugUtils.currentLine=196608;
+ //BA.debugLineNum = 196608;BA.debugLine="Sub Activity_Resume";
+RDebugUtils.currentLine=196610;
+ //BA.debugLineNum = 196610;BA.debugLine="End Sub";
+return "";
+}
+public static String  _btntest_click() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "btntest_click", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "btntest_click", null));}
+RDebugUtils.currentLine=22216704;
+ //BA.debugLineNum = 22216704;BA.debugLine="Private Sub btnTest_Click";
+RDebugUtils.currentLine=22216705;
+ //BA.debugLineNum = 22216705;BA.debugLine="ftp.GetFolders";
+_ftp._getfolders /*String*/ (null);
+RDebugUtils.currentLine=22216706;
+ //BA.debugLineNum = 22216706;BA.debugLine="End Sub";
 return "";
 }
 public static String  _chkstoreftpdata_checkedchange(boolean _checked) throws Exception{
- //BA.debugLineNum = 58;BA.debugLine="Private Sub chkStoreFtpData_CheckedChange(Checked";
- //BA.debugLineNum = 60;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "chkstoreftpdata_checkedchange", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "chkstoreftpdata_checkedchange", new Object[] {_checked}));}
+RDebugUtils.currentLine=393216;
+ //BA.debugLineNum = 393216;BA.debugLine="Private Sub chkStoreFtpData_CheckedChange(Checked";
+RDebugUtils.currentLine=393218;
+ //BA.debugLineNum = 393218;BA.debugLine="End Sub";
 return "";
 }
 public static String  _getftpdata() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "getftpdata", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "getftpdata", null));}
 anywheresoftware.b4a.objects.collections.List _lst = null;
 nl.pdeg.ftporder.main._ftpdata _ftpdatas = null;
- //BA.debugLineNum = 48;BA.debugLine="Private Sub GetFtpData";
- //BA.debugLineNum = 49;BA.debugLine="Starter.SetDummyFTP";
+RDebugUtils.currentLine=327680;
+ //BA.debugLineNum = 327680;BA.debugLine="Private Sub GetFtpData";
+RDebugUtils.currentLine=327681;
+ //BA.debugLineNum = 327681;BA.debugLine="Starter.SetDummyFTP";
 mostCurrent._starter._setdummyftp /*String*/ ();
- //BA.debugLineNum = 50;BA.debugLine="Dim lst As List = Starter.GetFtpData";
+RDebugUtils.currentLine=327682;
+ //BA.debugLineNum = 327682;BA.debugLine="Dim lst As List = Starter.GetFtpData";
 _lst = new anywheresoftware.b4a.objects.collections.List();
 _lst = mostCurrent._starter._getftpdata /*anywheresoftware.b4a.objects.collections.List*/ ();
- //BA.debugLineNum = 51;BA.debugLine="Dim ftpDatas As ftpData = lst.Get(0)";
+RDebugUtils.currentLine=327683;
+ //BA.debugLineNum = 327683;BA.debugLine="Dim ftpDatas As ftpData = lst.Get(0)";
 _ftpdatas = (nl.pdeg.ftporder.main._ftpdata)(_lst.Get((int) (0)));
- //BA.debugLineNum = 53;BA.debugLine="edtServer.Text = ftpDatas.url";
-mostCurrent._edtserver._settext /*String*/ (_ftpdatas.url /*String*/ );
- //BA.debugLineNum = 54;BA.debugLine="edtUser.Text = ftpDatas.username";
-mostCurrent._edtuser._settext /*String*/ (_ftpdatas.username /*String*/ );
- //BA.debugLineNum = 56;BA.debugLine="End Sub";
-return "";
-}
-public static String  _globals() throws Exception{
- //BA.debugLineNum = 22;BA.debugLine="Sub Globals";
- //BA.debugLineNum = 24;BA.debugLine="Private edtPass As B4XFloatTextField";
-mostCurrent._edtpass = new nl.pdeg.ftporder.b4xfloattextfield();
- //BA.debugLineNum = 25;BA.debugLine="Private edtServer As B4XFloatTextField";
-mostCurrent._edtserver = new nl.pdeg.ftporder.b4xfloattextfield();
- //BA.debugLineNum = 26;BA.debugLine="Private edtUser As B4XFloatTextField";
-mostCurrent._edtuser = new nl.pdeg.ftporder.b4xfloattextfield();
- //BA.debugLineNum = 27;BA.debugLine="Private edtPort As B4XFloatTextField";
-mostCurrent._edtport = new nl.pdeg.ftporder.b4xfloattextfield();
- //BA.debugLineNum = 28;BA.debugLine="Private edtInitialFolder As B4XFloatTextField";
-mostCurrent._edtinitialfolder = new nl.pdeg.ftporder.b4xfloattextfield();
- //BA.debugLineNum = 29;BA.debugLine="Private swStoreFtpInfo As B4XSwitch";
-mostCurrent._swstoreftpinfo = new nl.pdeg.ftporder.b4xswitch();
- //BA.debugLineNum = 30;BA.debugLine="Private lblStoreFtpInfo As Label";
-mostCurrent._lblstoreftpinfo = new anywheresoftware.b4a.objects.LabelWrapper();
- //BA.debugLineNum = 31;BA.debugLine="End Sub";
+RDebugUtils.currentLine=327685;
+ //BA.debugLineNum = 327685;BA.debugLine="edtServer.Text = ftpDatas.url";
+mostCurrent._edtserver._settext /*String*/ (null,_ftpdatas.url /*String*/ );
+RDebugUtils.currentLine=327686;
+ //BA.debugLineNum = 327686;BA.debugLine="edtUser.Text = ftpDatas.username";
+mostCurrent._edtuser._settext /*String*/ (null,_ftpdatas.username /*String*/ );
+RDebugUtils.currentLine=327688;
+ //BA.debugLineNum = 327688;BA.debugLine="End Sub";
 return "";
 }
 public static String  _lblstoreftpinfo_click() throws Exception{
- //BA.debugLineNum = 78;BA.debugLine="Private Sub lblStoreFtpInfo_Click";
- //BA.debugLineNum = 79;BA.debugLine="If swStoreFtpInfo.Value Then";
-if (mostCurrent._swstoreftpinfo._getvalue /*boolean*/ ()) { 
- //BA.debugLineNum = 80;BA.debugLine="swStoreFtpInfo.Value = False";
-mostCurrent._swstoreftpinfo._setvalue /*boolean*/ (anywheresoftware.b4a.keywords.Common.False);
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "lblstoreftpinfo_click", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "lblstoreftpinfo_click", null));}
+RDebugUtils.currentLine=589824;
+ //BA.debugLineNum = 589824;BA.debugLine="Private Sub lblStoreFtpInfo_Click";
+RDebugUtils.currentLine=589825;
+ //BA.debugLineNum = 589825;BA.debugLine="If swStoreFtpInfo.Value Then";
+if (mostCurrent._swstoreftpinfo._getvalue /*boolean*/ (null)) { 
+RDebugUtils.currentLine=589826;
+ //BA.debugLineNum = 589826;BA.debugLine="swStoreFtpInfo.Value = False";
+mostCurrent._swstoreftpinfo._setvalue /*boolean*/ (null,anywheresoftware.b4a.keywords.Common.False);
  }else {
- //BA.debugLineNum = 82;BA.debugLine="swStoreFtpInfo.Value = True";
-mostCurrent._swstoreftpinfo._setvalue /*boolean*/ (anywheresoftware.b4a.keywords.Common.True);
+RDebugUtils.currentLine=589828;
+ //BA.debugLineNum = 589828;BA.debugLine="swStoreFtpInfo.Value = True";
+mostCurrent._swstoreftpinfo._setvalue /*boolean*/ (null,anywheresoftware.b4a.keywords.Common.True);
  };
- //BA.debugLineNum = 84;BA.debugLine="End Sub";
-return "";
-}
-
-public static void initializeProcessGlobals() {
-    
-    if (main.processGlobalsRun == false) {
-	    main.processGlobalsRun = true;
-		try {
-		        b4a.example.dateutils._process_globals();
-main._process_globals();
-starter._process_globals();
-xuiviewsutils._process_globals();
-		
-        } catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-    }
-}public static String  _process_globals() throws Exception{
- //BA.debugLineNum = 16;BA.debugLine="Sub Process_Globals";
- //BA.debugLineNum = 17;BA.debugLine="Type ftpData(username As String, url As String, p";
-;
- //BA.debugLineNum = 19;BA.debugLine="Private xui As XUI";
-_xui = new anywheresoftware.b4a.objects.B4XViewWrapper.XUI();
- //BA.debugLineNum = 20;BA.debugLine="End Sub";
+RDebugUtils.currentLine=589830;
+ //BA.debugLineNum = 589830;BA.debugLine="End Sub";
 return "";
 }
 public static String  _setstoredinfo() throws Exception{
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "setstoredinfo", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "setstoredinfo", null));}
 anywheresoftware.b4a.objects.collections.List _lst = null;
- //BA.debugLineNum = 62;BA.debugLine="Private Sub SetStoredInfo";
- //BA.debugLineNum = 63;BA.debugLine="Dim lst As List = Starter.GetStoreLoginInfo";
+RDebugUtils.currentLine=458752;
+ //BA.debugLineNum = 458752;BA.debugLine="Private Sub SetStoredInfo";
+RDebugUtils.currentLine=458753;
+ //BA.debugLineNum = 458753;BA.debugLine="Dim lst As List = Starter.GetStoreLoginInfo";
 _lst = new anywheresoftware.b4a.objects.collections.List();
 _lst = mostCurrent._starter._getstorelogininfo /*anywheresoftware.b4a.objects.collections.List*/ ();
- //BA.debugLineNum = 70;BA.debugLine="swStoreFtpInfo.Value = True";
-mostCurrent._swstoreftpinfo._setvalue /*boolean*/ (anywheresoftware.b4a.keywords.Common.True);
- //BA.debugLineNum = 72;BA.debugLine="End Sub";
+RDebugUtils.currentLine=458760;
+ //BA.debugLineNum = 458760;BA.debugLine="swStoreFtpInfo.Value = True";
+mostCurrent._swstoreftpinfo._setvalue /*boolean*/ (null,anywheresoftware.b4a.keywords.Common.True);
+RDebugUtils.currentLine=458762;
+ //BA.debugLineNum = 458762;BA.debugLine="End Sub";
 return "";
 }
 public static String  _swstoreftpinfo_valuechanged(boolean _value) throws Exception{
- //BA.debugLineNum = 74;BA.debugLine="Private Sub swStoreFtpInfo_ValueChanged (Value As";
- //BA.debugLineNum = 76;BA.debugLine="End Sub";
+RDebugUtils.currentModule="main";
+if (Debug.shouldDelegate(mostCurrent.activityBA, "swstoreftpinfo_valuechanged", false))
+	 {return ((String) Debug.delegate(mostCurrent.activityBA, "swstoreftpinfo_valuechanged", new Object[] {_value}));}
+RDebugUtils.currentLine=524288;
+ //BA.debugLineNum = 524288;BA.debugLine="Private Sub swStoreFtpInfo_ValueChanged (Value As";
+RDebugUtils.currentLine=524290;
+ //BA.debugLineNum = 524290;BA.debugLine="End Sub";
 return "";
 }
 }
