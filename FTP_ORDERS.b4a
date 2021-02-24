@@ -1,0 +1,103 @@
+﻿Build1=Default,nl.pdeg.ftporder
+File1=main.bal
+File2=veramono.ttf
+FileGroup1=Default Group
+FileGroup2=Default Group
+Group=Default Group
+Library1=core
+Library2=runtimepermissions
+Library3=xui
+Library4=xui views
+Library5=net
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: https://www.b4x.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="14" android:targetSdkVersion="29"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~CreateResourceFromFile(Macro, Themes.LightTheme)~\n~'End of default text.~\n~
+Module1=ClassFtp
+Module2=Starter
+NumberOfFiles=2
+NumberOfLibraries=5
+NumberOfModules=2
+Version=10.6
+@EndOfDesignText@
+
+#Region  Project Attributes 
+	#ApplicationLabel: FTP ORDERS
+	#VersionCode: 1
+	#VersionName: 0.01
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: portrait
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+Sub Process_Globals
+	Type ftpData(username As String, url As String, port As Int)
+	
+	Private xui As XUI
+End Sub
+
+Sub Globals
+	'These global variables will be redeclared each time the activity is created.
+	Private edtPass As B4XFloatTextField
+	Private edtServer As B4XFloatTextField
+	Private edtUser As B4XFloatTextField
+	Private edtPort As B4XFloatTextField
+	Private edtInitialFolder As B4XFloatTextField
+	Private swStoreFtpInfo As B4XSwitch
+	Private lblStoreFtpInfo As Label
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	Activity.LoadLayout("main")
+	Activity.Title = Application.LabelName
+	GetFtpData
+	SetStoredInfo
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+
+End Sub
+
+Private Sub GetFtpData
+	Starter.SetDummyFTP
+	Dim lst As List = Starter.GetFtpData
+	Dim ftpDatas As ftpData = lst.Get(0)
+	
+	edtServer.Text = ftpDatas.url
+	edtUser.Text = ftpDatas.username
+	
+End Sub
+
+Private Sub chkStoreFtpData_CheckedChange(Checked As Boolean)
+	
+End Sub
+
+Private Sub SetStoredInfo
+	Dim lst As List = Starter.GetStoreLoginInfo
+	
+'	If lst.Size = 0 Then
+'		swStoreFtpInfo.Value = True
+'		Return
+'	End If
+	
+	swStoreFtpInfo.Value = True
+	
+End Sub
+
+Private Sub swStoreFtpInfo_ValueChanged (Value As Boolean)
+	
+End Sub
+
+Private Sub lblStoreFtpInfo_Click
+	If swStoreFtpInfo.Value Then
+		swStoreFtpInfo.Value = False
+	Else
+		swStoreFtpInfo.Value = True	
+	End If
+End Sub
