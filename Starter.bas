@@ -14,14 +14,15 @@ Version=9.9
 Sub Process_Globals
 	Private rp As RuntimePermissions
 	
-	Private ftp_user, ftp_pass, ftp_url As String
-	Private ftp_port, ftpReloadData As Int
+	Public ftp_user, ftp_pass, ftp_url As String
+	Public ftp_port, ftpReloadData As Int
 	
-	Private appFolder As String
+	Public appFolder As String
 	Public StoreLoginInfo As Boolean
 End Sub
 
 Sub Service_Create
+	SetDummyFTP
 	GetSetAppFolder
 End Sub
 
@@ -61,6 +62,7 @@ Public Sub SetDummyFTP
 	ftp_url = "ftp.vhcjongensbv.nl"
 	ftp_user = "weegschaal"
 	ftp_pass = "Jongens21!@#"
+	ftp_port = 21
 End Sub
 
 Public Sub CreateftpData (username As String, url As String, port As Int) As ftpData
